@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from openai import OpenAI
+from groq import Groq
 
 # ---------------------------------------------------------
 # Page Configuration
@@ -16,15 +16,15 @@ st.set_page_config(
 # ---------------------------------------------------------
 # API Key Initialization (Streamlit Secrets / Local Fallback)
 # ---------------------------------------------------------
-api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+api_key = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
 
 # Sidebar - Settings & API Status
 st.sidebar.title("⚙️ Settings")
 if api_key:
-    st.sidebar.success("OpenAI API Key Detected", icon="✅")
-    client = OpenAI(api_key=api_key)
+    st.sidebar.success("Groq API Key Detected", icon="✅")
+    client = Groq(api_key=api_key)
 else:
-    st.sidebar.warning("No OpenAI API Key found. Add `OPENAI_API_KEY` to Secrets or environment.", icon="⚠️")
+    st.sidebar.warning("No Groq API Key found. Add `GROQ_API_KEY` to Secrets or environment.", icon="⚠️")
     client = None
 
 # ---------------------------------------------------------
@@ -113,9 +113,9 @@ if df is not None:
 
     if st.button("Generate AI Optimization Report", type="primary"):
         if not client:
-            st.error("Cannot run analysis without an OpenAI API Key. Add it to Streamlit Secrets.")
+            st.error("Cannot run analysis without a Groq API Key. Add `GROQ_API_KEY` to Streamlit Secrets.")
         else:
-            with st.spinner("Analyzing cloud resource utilization and billing patterns..."):
+            with st.spinner("Analyzing cloud resource utilization and billing patterns via Groq AI..."):
                 summary_str = df.to_csv(index=False)
 
                 prompt = f"""
@@ -132,7 +132,7 @@ if df is not None:
 
                 try:
                     response = client.chat.completions.create(
-                        model="gpt-4o-mini",
+                        model="llama-3.3-70b-versatile",
                         messages=[
                             {"role": "system", "content": "You are a Cloud Cost Optimization assistant."},
                             {"role": "user", "content": prompt}
@@ -160,3 +160,6 @@ if df is not None:
 
 else:
     st.warning("Please upload a CSV file or add `sample_cloud_bill.csv` to the root folder to continue.")
+
+
+    # python -m streamlit run app.py
