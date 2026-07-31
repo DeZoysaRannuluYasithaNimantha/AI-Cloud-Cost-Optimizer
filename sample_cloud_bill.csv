@@ -1,0 +1,7 @@
+ResourceID,Service,CloudProvider,MonthlyCost,UsageHours,Region
+i-0a12b345c678,Amazon EC2,AWS,145.50,720,us-east-1
+db-prod-sql,AWS RDS,AWS,320.00,720,us-east-1
+vol-0998a776,EBS Storage,AWS,45.00,720,us-east-1
+vm-app-frontend,Azure Virtual Machines,Azure,210.00,720,eastus
+k8s-cluster-node,Google Kubernetes Engine,GCP,185.20,720,us-central1
+unused-elastic-ip,Amazon VPC,AWS,7.20,720,us-east-1
